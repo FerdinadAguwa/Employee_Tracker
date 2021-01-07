@@ -28,29 +28,40 @@ CREATE TABLE department  (
 );
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Ferd","Aguwua",1,1234);
+VALUES ("Ferdinad","Aguwua",1,1234);
 INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("Drake","Josh",2,7890);
+VALUES ("Drake","Josh",2,);
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Geroge","Carter",3,1234);
+INSERT INTO employee (first_name,last_name,role_id,manager_id)
+VALUES ("Billy","Fracis",4,7890);
 
 
 
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Head honcho",25000,1);
+VALUES ("Operations Manager",25000,1);
 INSERT INTO role (title, salary, department_id)
-VALUES ("Hocho",35000,2);
+VALUES ("Quality Control",35000,2);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Accountant",25000,1);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Receptionist",35000,2);
+
+
 
 INSERT INTO department (name)
-VALUES ("Finances");
+VALUES ("Production");
+INSERT INTO department (name)
+VALUES ("Research");
+INSERT INTO department (name)
+VALUES ("Marketing");
 INSERT INTO department (name)
 VALUES ("Accounting");
 
 SELECT * FROM employee;
 SELECT * FROM role;
-
--- SELECT title, first_name, last_name
--- FROM books
--- LEFT JOIN authors ON books.authorId = authors.id;
+SELECT * FROM department
 
 SELECT title, first_name, last_name
 FROM employee

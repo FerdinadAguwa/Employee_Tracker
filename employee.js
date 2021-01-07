@@ -16,9 +16,39 @@ var connection = mysql.createConnection({
   database: "employeeDB"
 });
 
-connection.connect((err) => {
+
+
+connection.connect(function(err) {
     if (err) throw err;
-    console.log('connected as id ' + connection.threadId);
-    connection.end();
+    // run the start function after the connection is made to prompt the user
+    start();
   });
   
+  // function which prompts the user for what action they should take
+  function start() {
+    inquirer
+      .prompt({
+        name: "choice",
+        type: "list",
+        message: "What would you like to do?",
+        choices: ["View All Employees", 
+        "View All Employees by Department",
+         "View All Employees by Manager",
+         "View All Employees by Manager",
+         "Add Eployee",
+         "Remove Employee",
+         "Update Employee",
+        ]
+      })
+      .then(function(answer) {
+        // based on their answer, either call the bid or the post functions
+        if (answer.choice === "View All Employees") {
+        //   postAuction();
+        }
+        else if(answer.choice === "View All Employees by Department") {
+        //   bidAuction();
+        } else{
+          connection.end();
+        }
+      });
+    }
