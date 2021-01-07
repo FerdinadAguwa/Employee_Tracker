@@ -31,7 +31,7 @@ connection.connect(function(err) {
         name: "choice",
         type: "list",
         message: "What would you like to do?",
-        choices: ["View All Employees", "View All Employees by Department","View All Employees by Manager","Add Employee","Remove Employee", "Update Employee"]
+        choices: ["View All Employees", "View All Employees by Role","View All Employees by Manager","Add Employee","Remove Employee", "Update Employee"]
       })
       .then(function(answer) {
         // based on their answer, either call the bid or the post functions
@@ -39,8 +39,8 @@ connection.connect(function(err) {
         showEmployee();
         // console.log("all")
         }
-        else if(answer.choice === "View All Employees by Department") {
-           
+        else if(answer.choice === "View All Employees by Role") {
+           showRole()
         //   bidAuction();
         } else if(answer.choice ==="View All Employees by Manager"){
 
@@ -63,14 +63,24 @@ connection.connect(function(err) {
     }
 // Showcases all of the employees that are listed for the user 
     function showEmployee() {
-        console.log("Selecting all products...\n");
-        connection.query("SELECT * FROM employee", function(err, res) {
+        console.log("Employee DATABASE...\n");
+        connection.query("SELECT first_name, last_name FROM employee", function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
           console.log(res);
           connection.end();
         });
       }
+      function showRole() {
+        console.log("Employee DATABASE...\n");
+        connection.query("SELECT title FROM role", function(err, res) {
+          if (err) throw err;
+          // Log all results of the SELECT statement
+          console.log(res);
+          connection.end();
+        });
+      }
+
 
 
 
