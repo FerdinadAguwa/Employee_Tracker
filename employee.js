@@ -24,22 +24,22 @@ connection.connect(function(err) {
     start();
   });
   
-  // function which prompts the user for what action they should take
+  // start function which prompts the user which actio to take 
   function start() {
     inquirer
       .prompt({
         name: "choice",
         type: "list",
         message: "What would you like to do?",
-        choices: ["View All Employees", "View All Employees by Role","View All Employees by Manager","Add Employee","Remove Employee", "Update Employee"]
+        choices: ["View All Employees", "View All Employee Roles","View All Employees by Manager","Add Employee","Remove Employee", "Update Employee"]
       })
       .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
+        // the user will get a response based on the answer that they select.
         if (answer.choice === "View All Employees") {
         showEmployee();
-        // console.log("all")
+        
         }
-        else if(answer.choice === "View All Employees by Role") {
+        else if(answer.choice === "View All Employee Roles") {
            showRole()
         //   bidAuction();
         } else if(answer.choice ==="View All Employees by Manager"){
@@ -64,10 +64,10 @@ connection.connect(function(err) {
 // Showcases all of the employees that are listed for the user 
     function showEmployee() {
         console.log("Employee DATABASE...\n");
-        connection.query("SELECT first_name, last_name FROM employee", function(err, res) {
+        connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary FROM employee INNER JOIN role ON role.id = employee.role_id", function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
-          console.log(res);
+          console.log.table(res);
           connection.end();
         });
       }
@@ -80,7 +80,15 @@ connection.connect(function(err) {
           connection.end();
         });
       }
-
+      function showDepartment() {
+        console.log("Employee DATABASE...\n");
+        connection.query("SELECT name FROM department", function(err, res) {
+          if (err) throw err;
+          // Log all results of the SELECT statement
+          console.log(res);
+          connection.end();
+        });
+      }
 
 
 

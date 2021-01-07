@@ -9,7 +9,8 @@ CREATE TABLE employee (
   last_name VARCHAR(45) NOT NULL,
   role_id INT,
   manager_id INT,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+    FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 CREATE TABLE role (
@@ -17,7 +18,8 @@ CREATE TABLE role (
   title VARCHAR(100) NOT NULL,
   salary DECIMAL NOT NULL,
   department_id INT,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
 CREATE TABLE department  (
@@ -30,7 +32,7 @@ CREATE TABLE department  (
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Ferdinad","Aguwua",1,1234);
 INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("Drake","Josh",2,);
+VALUES ("Drake","Josh",2);
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Geroge","Carter",3,1234);
 INSERT INTO employee (first_name,last_name,role_id,manager_id)
@@ -61,7 +63,7 @@ VALUES ("Accounting");
 
 SELECT * FROM employee;
 SELECT * FROM role;
-SELECT * FROM department
+SELECT * FROM department;
 
 SELECT title, first_name, last_name
 FROM employee

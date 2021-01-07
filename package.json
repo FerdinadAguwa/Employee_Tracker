@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/FerdinadAguwa/Employee_Tracker#readme",
   "dependencies": {
+    "init": "^0.1.2",
     "inquirer": "^7.3.3",
     "mysql": "^2.18.1"
   }
