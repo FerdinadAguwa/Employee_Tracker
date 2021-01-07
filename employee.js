@@ -31,24 +31,48 @@ connection.connect(function(err) {
         name: "choice",
         type: "list",
         message: "What would you like to do?",
-        choices: ["View All Employees", 
-        "View All Employees by Department",
-         "View All Employees by Manager",
-         "View All Employees by Manager",
-         "Add Eployee",
-         "Remove Employee",
-         "Update Employee",
-        ]
+        choices: ["View All Employees", "View All Employees by Department","View All Employees by Manager","Add Employee","Remove Employee", "Update Employee"]
       })
       .then(function(answer) {
         // based on their answer, either call the bid or the post functions
         if (answer.choice === "View All Employees") {
-        //   postAuction();
+        showEmployee();
+        // console.log("all")
         }
         else if(answer.choice === "View All Employees by Department") {
+           
         //   bidAuction();
-        } else{
+        } else if(answer.choice ==="View All Employees by Manager"){
+
+            console.log("wassup")
+        }
+        else if(answer.choice ==="Add Employee"){
+
+
+        }
+        else if(answer.choice ==="Remove Employee"){
+
+        }
+        else if(answer.choice === "Update Employee"){
+
+        }
+        else{
           connection.end();
         }
       });
     }
+// Showcases all of the employees that are listed for the user 
+    function showEmployee() {
+        console.log("Selecting all products...\n");
+        connection.query("SELECT * FROM employee", function(err, res) {
+          if (err) throw err;
+          // Log all results of the SELECT statement
+          console.log(res);
+          connection.end();
+        });
+      }
+
+
+
+
+    
