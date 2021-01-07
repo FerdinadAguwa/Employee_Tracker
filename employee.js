@@ -31,7 +31,7 @@ connection.connect(function(err) {
         name: "choice",
         type: "list",
         message: "What would you like to do?",
-        choices: ["View All Employees", "View All Employee Roles","View All Employees by Manager","Add Employee","Remove Employee", "Update Employee"]
+        choices: ["View All Employees", "View All Employee by Roles","View All Employees by Department","Add Employee","Remove Employee", "Update Employee"]
       })
       .then(function(answer) {
         // the user will get a response based on the answer that they select.
@@ -39,11 +39,11 @@ connection.connect(function(err) {
         showEmployee();
         
         }
-        else if(answer.choice === "View All Employee Roles") {
+        else if(answer.choice === "View All Employee by Roles") {
            showRole()
         //   bidAuction();
-        } else if(answer.choice ==="View All Employees by Manager"){
-
+        } else if(answer.choice ==="View All Employees by Department"){
+            showDepartment()
             console.log("wassup")
         }
         else if(answer.choice ==="Add Employee"){
@@ -64,16 +64,16 @@ connection.connect(function(err) {
 // Showcases all of the employees that are listed for the user 
     function showEmployee() {
         console.log("Employee DATABASE...\n");
-        connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary FROM employee INNER JOIN role ON role.id = employee.role_id", function(err, res) {
+        connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id", function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
-          console.log.table(res);
+          console.log(res);
           connection.end();
         });
       }
       function showRole() {
         console.log("Employee DATABASE...\n");
-        connection.query("SELECT title FROM role", function(err, res) {
+        connection.query("SELECT employee.first_name, employee.last_name, role.title FROM employee INNER JOIN role ON role.id = employee.role_id", function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
           console.log(res);
@@ -82,7 +82,7 @@ connection.connect(function(err) {
       }
       function showDepartment() {
         console.log("Employee DATABASE...\n");
-        connection.query("SELECT name FROM department", function(err, res) {
+        connection.query("SELECT employee.first_name, employee.last_name, department.name FROM employee INNER JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id", function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
           console.log(res);
