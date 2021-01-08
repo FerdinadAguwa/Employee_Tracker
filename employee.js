@@ -37,6 +37,7 @@ connection.connect(function(err) {
         // the user will get a response based on the answer that they select.
         if (answer.choice === "View All Employees") {
         showEmployee();
+        // start()
         
         }
         else if(answer.choice === "View All Employee by Roles") {
@@ -47,6 +48,7 @@ connection.connect(function(err) {
             console.log("wassup")
         }
         else if(answer.choice ==="Add Employee"){
+        ferd()
 
 
         }
@@ -67,8 +69,8 @@ connection.connect(function(err) {
         connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id", function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
-          console.log(res);
-          connection.end();
+          console.table(res);
+         connection.end();
         });
       }
       function showRole() {
@@ -80,6 +82,7 @@ connection.connect(function(err) {
           connection.end();
         });
       }
+
       function showDepartment() {
         console.log("Employee DATABASE...\n");
         connection.query("SELECT employee.first_name, employee.last_name, department.name FROM employee INNER JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id", function(err, res) {
@@ -93,4 +96,54 @@ connection.connect(function(err) {
 
 
 
+
+      function createEmployee(answer) {
+        console.log("Inserting a new product...\n");
+        var query = connection.query(
+          "INSERT INTO employee SET ?",
+          {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: answer.role_id
+          },
+          function(err, res) {
+            if (err) throw err;
+            console.log(res.affectedRows + " product inserted!\n");
+            // Call updateProduct AFTER the INSERT completes
+           
+          }
+        );
+      
+        // logs the actual query being run
+        console.log(query.sql);
+    }
+
+function ferd(){
+    inquirer.prompt(response).then(function (answers) {
+        createEmployee(answers);
+        // console.log(answers)
+            
+        
+        });
+}
+
+
+    let response = [
+        {
+            type: 'input',
+            message: 'What is the First Name ?',
+            name: 'first_name',
+        },
+        {
+            type: 'input',
+            message: 'What is the Last Name ?',
+            name: 'last_name',
+        },
     
+        {
+            type: 'input',
+            message: 'What is the Role Id ?',
+            name: 'role_id',
+        },
+       
+    ]
