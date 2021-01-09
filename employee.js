@@ -42,10 +42,10 @@ function start() {
             }
             else if (answer.choice === "View All Roles") {
                 showRole()
-                
+
             } else if (answer.choice === "View All Departments") {
                 showDepartment()
-                
+
             }
             else if (answer.choice === "Add Employee") {
                 addEmployee()
@@ -53,7 +53,7 @@ function start() {
 
             }
             else if (answer.choice === "Add Role") {
-                
+                addedRole()
 
 
             }
@@ -73,6 +73,7 @@ function start() {
             }
         });
 }
+
 // Showcases all of the employees that are listed for the user 
 function showEmployee() {
     console.log("Employee DATABASE...\n");
@@ -106,7 +107,9 @@ function showDepartment() {
 
 
 
+// ===================================================================
 
+// (ADD EMPLOYEE SECTION)
 
 function createEmployee(answer) {
     console.log("Inserting a new product...\n");
@@ -123,14 +126,34 @@ function createEmployee(answer) {
             // Call updateProduct AFTER the INSERT completes
             start()
         }
-       
+
     );
-s
     // logs the actual query being run
     console.log(query.sql);
 }
+// function to get the questons to run 
 
 function addEmployee() {
+    // add employee questions
+    let response = [
+        {
+            type: 'input',
+            message: 'What is the First Name ?',
+            name: 'first_name',
+        },
+        {
+            type: 'input',
+            message: 'What is the Last Name ?',
+            name: 'last_name',
+        },
+    
+        {
+            type: 'input',
+            message: 'What is the Role Id ?',
+            name: 'role_id',
+        },
+    
+    ]
     inquirer.prompt(response).then(function (answers) {
         createEmployee(answers);
         // console.log(answers)
@@ -139,27 +162,60 @@ function addEmployee() {
     });
 }
 
+// ======================================================================
 
-let response = [
-    {
-        type: 'input',
-        message: 'What is the First Name ?',
-        name: 'first_name',
-    },
-    {
-        type: 'input',
-        message: 'What is the Last Name ?',
-        name: 'last_name',
-    },
+// (ADD ROLE SECTION)
 
-    {
-        type: 'input',
-        message: 'What is the Role Id ?',
-        name: 'role_id',
-    },
+function createRole(answer) {
+    console.log("Inserting a new role...\n");
+    var query = connection.query(
+        "INSERT INTO role SET ?",
+        {
+            title: answer.role,
+            salary: answer.salary,
+            department_id: answer.departmentID
+          
+        },
+        function (err, res) {
+            if (err) throw err;
+            console.log(res.affectedRows + " role inserted!\n");
+            // Call updateProduct AFTER the INSERT completes
+            start()
+        }
 
-]
+    );
+    // logs the actual query being run
+    console.log(query.sql);
+}
+function addedRole(){ 
+    let response = 
+    [
+        {
+            type: 'input',
+            message: 'What Role would you like to add?',
+            name: 'role',
+        },
+        {
+            type: 'input',
+            message: 'What is the salary?',
+            name: 'salary',
+        },
+        {
+            type: 'input',
+            message: 'What is the department ID?',
+            name: 'departmentID',
+        }
+    ]
+inquirer.prompt(response).then(function (answers) {
+    createRole(answers);
+    // console.log(answers)
 
+
+});
+
+}
+
+// ==========================================================================
 
 function updateEmployeeRole(update) {
     console.log("Updating all Rocky Road quantities...\n");
@@ -171,34 +227,33 @@ function updateEmployeeRole(update) {
             },
             {
                 id: update.employee_id
-                        }
+            }
         ],
         function (err, res) {
             if (err) throw err;
             console.log(res.affectedRows + " products updated!\n");
             // Call deleteProduct AFTER the UPDATE completes
-         
+
         })
-        }
-        let roleResponse = [
-            {
-                type: 'input',
-                message: 'What is the role id?',
-                name: 'role_id',
-            },
-            {
-                type: 'input',
-                message: 'What is the employees id ?',
-                name: 'employee_id',
-            },
-        
-        ]
-        function ferd2() {
-            inquirer.prompt(roleResponse).then(function (answers) {
-                updateEmployeeRole(answers);
-                // console.log(answers)
-        
-        
-            });
-        }
-        
+}
+let roleResponse = [
+    {
+        type: 'input',
+        message: 'What is the role id?',
+        name: 'role_id',
+    },
+    {
+        type: 'input',
+        message: 'What is the employees id ?',
+        name: 'employee_id',
+    },
+
+]
+function ferd2() {
+    inquirer.prompt(roleResponse).then(function (answers) {
+        updateEmployeeRole(answers);
+        // console.log(answers)
+
+
+    });
+}
