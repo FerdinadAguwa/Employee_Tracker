@@ -31,7 +31,7 @@ function start() {
             name: "choice",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View All Roles", "View All Departments", "Add Employee", "Add Role", "Add Department", "Remove Employee", "Update Employee Role"]
+            choices: ["View All Employees", "View All Roles", "View All Departments", "Add Employee", "Add Role", "Add Department", "Remove Employee", "Update Employee Role","Close"]
         })
         .then(function (answer) {
             // the user will get a response based on the answer that they select.
@@ -63,12 +63,13 @@ function start() {
 
             }
             else if (answer.choice === "Remove Employee") {
-                lookUpManager()
+                eraseEmployee()
             }
             else if (answer.choice === "Update Employee Role") {
-                updatedRole()
+                 updatedRole()
+              
             }
-            else {
+            else if(answer.choice === "Close"){
                 connection.end();
             }
         });
@@ -77,7 +78,7 @@ function start() {
 // Showcases all of the employees that are listed for the user 
 function showEmployee() {
     console.log("Employee DATABASE...\n");
-    connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id", function (err, res) {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id", function (err, res) {
         if (err) throw err;
         // Log all results of the SELECT statement
         console.table(res);
@@ -104,7 +105,6 @@ function showDepartment() {
         start();
     });
 }
-
 
 
 // ===================================================================
@@ -270,7 +270,7 @@ function updateEmployeeRole(update) {
         "UPDATE employee SET ? WHERE ?",
         [
             {
-                role_id: update.role_id
+                role_id: update.newRole
             },
             {
                 id: update.employee_id
@@ -278,17 +278,18 @@ function updateEmployeeRole(update) {
         ],
         function (err, res) {
             if (err) throw err;
-            console.log(res.affectedRows + " products updated!\n");
+            console.log(res.affectedRows + " Employee Role has been updated!\n");
             // Call deleteProduct AFTER the UPDATE completes
+            start()
 
         })
-        console.log(query.sql);
+    console.log(query.sql);
 }
 let roleResponse = [
     {
         type: 'input',
         message: 'What is the role id?',
-        name: 'role_id',
+        name: 'newRole',
     },
     {
         type: 'input',
@@ -300,36 +301,42 @@ let roleResponse = [
 function updatedRole() {
     inquirer.prompt(roleResponse).then(function (answers) {
         updateEmployeeRole(answers);
-         console.log(answers)
+        console.log(answers)
 
 
     });
 }
 
 // =======================================================================
+// {DELETE DATA}
+function deleteEmployee(answers) {
+    console.log("Deleting Employee...\n");
+    connection.query(
+      "DELETE FROM employee WHERE ?",
+      {
+        id: answers.employeeID
+      },
+      function(err, res) {
+        if (err) throw err;
+        console.log(res.affectedRows + " products deleted!\n");
+        // Call readProducts AFTER the DELETE completes
+        start()
+      }
+    );
+  }
+  let deleteResponse = [
+    {
+        type: 'input',
+        message: 'What is the id of the employee you want to remove?',
+        name: 'employeeID',
+    },
+   
 
+]
+function eraseEmployee() {
+    inquirer.prompt(deleteResponse).then(function (erase) {
+        deleteEmployee(erase);
 
-// function lookUpManager(){
-//     let dptOptions = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, role.title FROM employee LEFT JOIN role on role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id WHERE manager_id = ?;", 1)
-// console.log(dptOptions)
-// dptOptions.map(({id,name}) =>({
-//     name: name, 
-//     value: id
-// })
-// )
-//     let list = [{ 
-//         name: "dpt_id",
-//         type: "list",
-//         message: "What department would you like to choose?",
-//         choices: dptOptions
-//     },
-//         {
-//             type: 'input',
-//             message: 'What is the employees id ?',
-//             name: 'employee_id',
-//         },
-    
-//     ]
-
-// }
-
+    });
+}
+ 
